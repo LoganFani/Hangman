@@ -1,0 +1,32 @@
+package Hangman;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Logic {
+	
+	public Logic() {
+		
+	}
+	
+	public String generateWord() {
+		final String[] EASY_WORDS = {"dog", "cat","red","blue","tree","key","ten","key","air","can"};
+		final String[] MEDIUM_WORDS = {"art","sand","glass","board","person","plus","equal","line","graph","floor"};
+		final String[] HARD_WORDS = {"keyboard","java","computer","alebra","science","coffee","quotient","polygon","equator","statistics"};
+		
+		int randomNum = new Random().nextInt(10);
+		
+		return EASY_WORDS[randomNum];
+	}
+	
+	public ArrayList<String> generateWordProgress(String word) {
+		ArrayList<String> wordProgress = new ArrayList<String>();
+		for (int i =0;i<word.length();i++) {
+			wordProgress.add("-");
+		}
+		
+		return wordProgress;
+			
+	}
+	
+}

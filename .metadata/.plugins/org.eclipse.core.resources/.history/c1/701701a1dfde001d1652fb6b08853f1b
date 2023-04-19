@@ -1,0 +1,28 @@
+package Hangman;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+
+public class LetterInputFilter extends PlainDocument {
+	
+	int charLimit;
+	
+	public LetterInputFilter(int limit) {
+		
+		charLimit = limit;
+		
+	}
+	
+	public void insertString(int offset, String str, AttributeSet set) throws BadLocationException {
+		
+		if (str.equals(null)) {
+			return;
+		}
+		
+		else if (getLength() + str.length() <= charLimit) {
+			super.insertString(offset,str,set);
+		}
+	}
+
+}

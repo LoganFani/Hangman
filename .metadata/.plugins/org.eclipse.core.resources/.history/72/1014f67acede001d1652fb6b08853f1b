@@ -1,0 +1,31 @@
+package Hangman;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+
+public class App extends JFrame implements ActionListener {
+
+	public App() {
+		final int WIDTH = 640;
+		final int HEIGHT = 480;
+		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setSize(WIDTH, HEIGHT);
+		this.setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		new App();
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
