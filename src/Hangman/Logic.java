@@ -20,7 +20,7 @@ public class Logic {
 								"keyboard","java","computer","alebra","science","coffee","quotient","polygon","equator","statistics"
 								};
 		
-		int randomNum = new Random().nextInt(10);
+		int randomNum = new Random().nextInt(30);
 		String randomWord = WORDS[randomNum];
 		
 		for (int i =0; i<randomWord.length();i++) {
