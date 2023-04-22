@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -16,12 +17,10 @@ public class App extends JFrame implements ActionListener {
 	
 	static Logic gameLogic = new Logic();
 	
-	String randomWord = gameLogic.generateWord();
+	static String randomWord = gameLogic.generateWord();
+	static ArrayList<Character> wordCharList = gameLogic.generateWordArray(randomWord);
 	static int guesses = 6;
 	
-	JButton bLetterGuess, bWordGuess;
-	JTextField tWordGuess;
-	JLabel lWordProgress,lNumGuesses;
 	
 	public App() {
 		
@@ -63,7 +62,7 @@ public class App extends JFrame implements ActionListener {
 		
 		//labels
 		JLabel lGuesses = new JLabel("Guesses: ");
-		lNumGuesses = new JLabel();
+		JLabel lNumGuesses = new JLabel();
 		
 		JLabel hangman = new JLabel(gameLogic.getHangManState(0));
 		
@@ -73,27 +72,29 @@ public class App extends JFrame implements ActionListener {
 		JLabel lNumWins = new JLabel("0");
 		JLabel lNumLosses = new JLabel("0");
 		
-		lWordProgress = new JLabel("");
+		JLabel lWordProgress = new JLabel(String.valueOf(gameLogic.generateWordProgress(randomWord)));
 		
 		JLabel lLettersGuessed = new JLabel("Letters Guessed: ");
-		JLabel lLetters = new JLabel("a");
+		JLabel lLetters = new JLabel("");
 		
 		
 		//buttons
-		bLetterGuess = new JButton("Guess Letter");
-		bLetterGuess.addActionListener(buttonListener);
+		JButton bLetterGuess = new JButton("Guess Letter");
 		
-		bWordGuess = new JButton("Guess Word");
+		
+		JButton bWordGuess = new JButton("Guess Word");
 		
 		//input
 		JTextField tLetterGuess = new JTextField();
 		tLetterGuess.setDocument(new LetterInputFilter(1));
 		tLetterGuess.setPreferredSize(new Dimension(100,24));
 		
-		tWordGuess = new JTextField();
+		JTextField tWordGuess = new JTextField();
 		tWordGuess.setPreferredSize(new Dimension(100,24));
 		
 		
+		
+		bLetterGuess.addActionListener(e -> charInput(tLetterGuess,randomWord,lWordProgress,lNumGuesses));
 		// add order
 		pGuesses.add(lGuesses,BorderLayout.WEST);
 		pGuesses.add(lNumGuesses,BorderLayout.EAST);
@@ -126,64 +127,43 @@ public class App extends JFrame implements ActionListener {
 		this.add(pNorth,BorderLayout.NORTH);
 		this.add(pInputSouth,BorderLayout.SOUTH);
 		
-		fillWordProgress(randomWord, lWordProgress);
+		
+		
 		
 		this.pack();
 		this.setVisible(true);
 	}
 	
 	public static void main(String[] args) {
-		
+		System.out.println(randomWord);
 		new App();
 		
 
 	}
 
-	ActionListener buttonListener = new ActionListener(){
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			if (e.getSource() == bLetterGuess) {
-				//charInput(tWordGuess.getText(),randomWord,lWordProgress,lNumGuesses);
-				System.out.print(tWordGuess.getText());
+
+	static ArrayList<Character> updateProg = gameLogic.generateWordProgress(randomWord);
+	private static void charInput(JTextField input, String word, JLabel progress, JLabel guessCounter) {
+		
+		if (wordCharList.contains(input.getText().charAt(0))) {
+			for (int i=0; i<wordCharList.size();i++) {
+				
+				if (wordCharList.get(i) == input.getText().charAt(0)) {
+					updateProg.set(i, wordCharList.get(i)); 
+					
 				}
-			}
-	};
-	
-	
-	private static void fillWordProgress(String word, JLabel label) {
-		
-		String tempStr = "";
-		
-		for (int i = 0; i<word.length();i++) {
-			tempStr += "-";
 		}
 		
-		label.setText(tempStr);
-		
-	}
-	
-	private static void charInput(String input, String word, JLabel progress, JLabel guessCounter) {
-		
-		String tempStr = "";
-		
-		for (int i =0; i<word.length(); i++) {
 			
-			
-			if (input.charAt(i) == word.charAt(i)) {
-				tempStr += input;
-			}
-			
-			else {
-				tempStr += "-";
-			}
-			
+			System.out.println(updateProg);
 		}
+		
+		
 		
 		guesses -=1;
 		guessCounter.setText(Integer.toString(guesses));
 		
-		progress.setText(tempStr);
+		progress.setText(String.valueOf(updateProg));
 		
 		
 	}

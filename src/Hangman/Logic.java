@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Logic {
-	
-	//word char array that stores each character of a random word chosen
-	//will later be compared to the word progress to check if a user has guessed a word
-	private ArrayList<Character> wordCharArray = new ArrayList<Character>();
-	
+		
 	public Logic() {
 		
 	}
@@ -22,10 +18,6 @@ public class Logic {
 		
 		int randomNum = new Random().nextInt(30);
 		String randomWord = WORDS[randomNum];
-		
-		for (int i =0; i<randomWord.length();i++) {
-			wordCharArray.add(randomWord.charAt(i));
-		}
 		
 		return randomWord;
 	}
@@ -43,17 +35,14 @@ public class Logic {
 			
 	}
 	
-	// if the userguess is in the wordCharArray it adds it to the progress array
-	public ArrayList<Character> fillWordProgress(ArrayList<Character> wordProgress, char userGuess){
+	public ArrayList<Character> generateWordArray (String randomWord){
+		ArrayList<Character> wordCharArray = new ArrayList<Character>();
 		
-		for (int i = 0; i<wordProgress.size();i++) {
-			if (userGuess == wordCharArray.get(i)) {
-				wordProgress.set(i,userGuess);
-			}
+		for(int i = 0;i<randomWord.length();i++) {
+			wordCharArray.add(randomWord.charAt(i));
 		}
 		
-		return wordProgress;
-		
+		return wordCharArray;
 	}
 	
 	// function that returns hangman ASCII based on the index put into the parameter
