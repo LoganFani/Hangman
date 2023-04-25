@@ -12,8 +12,9 @@ public class Logic {
 	String randomWord = generateWord();
 	ArrayList<Character> wordCharList = generateWordArray(randomWord);
 	ArrayList<Character> wordProgList = generateWordProgress(randomWord);
-	int guesses = 6;
+	ArrayList<String> lettersGuestList = new ArrayList<String>();
 	
+	int guesses = 6;
 	int numWins = 0;
 	int numLosses = 0;
 	
@@ -144,7 +145,7 @@ public class Logic {
  * takes the input box, the wordprogress label, the guess counter label, and the hangman label as a parameter
  * 
  */
-public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JLabel hangman) {
+public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JLabel hangman,JLabel lLetters) {
 		
 		//inside try/catch statement because it throws an error if the user clicks the button and nothing is in the input box
 		try {
@@ -177,6 +178,11 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 				//call the guessChecker function with the input box
 				guessChecker(input);
 				
+				//add letters to the guessed letters pool
+				lettersGuestList.add(input.getText());
+				lLetters.setText(lettersGuestList.toString());
+				
+				
 				//call the set hangman state with the hangman label
 				setHangManState(hangman);
 			}
@@ -200,7 +206,7 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
  * function checks if the word the user guesses is correct and then asks them if they want to play again
  * if they do call the reset() function which resets the global variables
  */
-public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman) {
+public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman,JLabel lLetters) {
 	
 	// if the input equals the random word..
 	if (input.getText().equals(randomWord)) {
@@ -217,7 +223,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		}
 		
 		// if they press yes call the reset function and reset all of the global variables for the game
-		else {reset(charInput,progress,lnumGuesses,hangman);}
+		else {reset(charInput,progress,lnumGuesses,hangman,lLetters);}
 		
 	}
 	
@@ -236,7 +242,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		}
 		
 		//if the user presses yes call the reset function
-		else {reset(charInput,progress,lnumGuesses,hangman);}
+		else {reset(charInput,progress,lnumGuesses,hangman,lLetters);}
 	}
 	
 }
@@ -315,7 +321,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	 * takes in the charInput textbox, the wordProgress label, the numGuesses labal, and the hangman label
 	 * when this function is called it resets the global variables to new ones and updates the labesl in the App class
 	 */
-	public void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman) {
+	public void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters) {
 		
 		randomWord = generateWord(); //generates new word
 		
@@ -332,6 +338,8 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		hangman.setText(getHangManState(0)); //resets the hangman state
 		
 		charInput.setDocument(new LetterInputFilter(1)); //resets the input filter back to 1 character
+		
+		lLetters.setText("");
 	}
 		
 	
