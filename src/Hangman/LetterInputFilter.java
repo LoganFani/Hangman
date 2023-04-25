@@ -4,11 +4,17 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+/**
+ * The LetterInputFiler performs data validation on the user input fields
+ */
 public class LetterInputFilter extends PlainDocument {
 	
 	int charLimit; //sets the char limit to whatever is put into the constructor
 	
-	//constructor
+	/**
+	 * Constructor for the LetterInput Class
+	 * @param limit The number of letters allowed in the JTextField
+	 */
 	public LetterInputFilter(int limit) {
 		
 		charLimit = limit;
