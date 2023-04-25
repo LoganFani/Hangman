@@ -8,12 +8,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * The App class creates and manages the JFrame used for the UI in which the game is played
+ */
 public class App extends JFrame{
 	
 	static Logic gameLogic = new Logic();
 	
 	
-	
+	/**
+	 * Generates the JFrame used for the UI
+	 */
 	public App() {
 		
 		
@@ -137,7 +142,10 @@ public class App extends JFrame{
 		this.setVisible(true);
 	}
 	
-	
+	/**
+	 * The main method calls the App() method to generate the UI and start the game
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new App();
 		

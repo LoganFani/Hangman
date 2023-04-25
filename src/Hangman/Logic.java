@@ -7,6 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+/**
+ * The Logic class handles all game logic associated with the Hangman gameplay 
+ */
 public class Logic {
 		
 	String randomWord = generateWord();
@@ -19,12 +22,17 @@ public class Logic {
 	int numLosses = 0;
 	
 	
-	
+	/**
+	 * Logic class constructor
+	 */
 	public Logic() {
 		
 	}
 	
-	//returns a random word and adds each char from that word to the wordCharArray
+	/**
+	 * Selects a random word from the WORDS array based off a random number
+	 * @return The random word selected
+	 */
 	public String generateWord() {
 		final String[] WORDS = {"dog", "cat","red","blue","tree","key","ten","key","air","can",
 								"art","sand","glass","board","person","plus","equal","line","graph","floor",
@@ -40,11 +48,11 @@ public class Logic {
 		return randomWord;
 	}
 	
-	/*
-	 * returns an array list of characters
-	 * uses the random word as a parameter
-	 * for each letter in the random word it creates an arraylist of characters with '-'
-	 */
+	/**
+	  * Creates an ArrayList containing the "-" character for each of the letters in the random word
+	  * @param randomWord The random word for the current game
+	  * @return The ArrayList of dashes
+	  */
 	public ArrayList<Character> generateWordProgress(String randomWord) {
 		ArrayList<Character> wordProgress = new ArrayList<Character>();
 		
@@ -57,11 +65,11 @@ public class Logic {
 			
 	}
 	
-	/*
-	 * returns an array list of characters of the actual letters in the word
-	 * takes the randomWord as a parameter
-	 * used later to see if the letter the user had entered matches with the random word
-	 */
+	/**
+	  * Breaks up the random word into individual characters and creates and ArrayList of characters
+	  * @param randomWord The random word for the current game
+	  * @return The ArrayList containting the characters of the current random word
+	  */
 	public ArrayList<Character> generateWordArray (String randomWord){
 		ArrayList<Character> wordCharArray = new ArrayList<Character>();
 		
@@ -72,10 +80,11 @@ public class Logic {
 		return wordCharArray;
 	}
 	
-	/*
-	 * function that returns a certain state of the hang-man
-	 * takes an int as a parameter and returns the index of the string array of hang-man
-	 */
+	/**
+	  * Outputs the current visual for the current progress in the hangman game
+	  * @param index The number of guesses the player has left
+	  * @return The current hangman visual
+	  */
 	public String getHangManState(int index) {
 		
 		final String[] HANGMAN = 
@@ -140,11 +149,13 @@ public class Logic {
 		return HANGMAN[index];
 	}
 
-/*
- * fucntion that checks the character input box in the gui and also checks if that character is in the random word
- * takes the input box, the wordprogress label, the guess counter label, and the hangman label as a parameter
- * 
- */
+/**
+  * Gets the user's current guess, checks if the letter guessed is in the word, updates current game data, and updates UI to reflect the guess
+  * @param input JtextField containing user input
+  * @param progress JLabel that outputs the which letters the user has correctly guessed
+  * @param guessCounter JLabel that shows how many guesses the user has left
+  * @param hangman JLabel that displays the current hangman picture to replect user's progress
+  */
 public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JLabel hangman,JLabel lLetters) {
 		
 		//inside try/catch statement because it throws an error if the user clicks the button and nothing is in the input box
@@ -199,12 +210,16 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 	}
 
 
-/*
- * function that takes in all of the previous functions parameters and more aswell
- * the additional parameters are the wordInput box, Jlabel wins, Jlabel losses, Jlabel numGuesses
- * function checks if the word the user guesses is correct and then asks them if they want to play again
- * if they do call the reset() function which resets the global variables
- */
+/**
+  * Gets the full word guessed and checks if it is the correct word for the current game
+  * @param charInput JTextField for the character guessing field
+  * @param input JTextField containing the word the user is currently guessing
+  * @param progress JLabel that outputs the which letters the user has correctly guessed
+  * @param wins JLabel that diaplays how many wins the user has
+  * @param losses JLabel that diaplays how many losses the user has
+  * @param lnumGuesses JLabel that displays how many guesses the user has left
+  * @param hangman JLabel that displays the current hangman picture to replect user's progress
+  */
 public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman,JLabel lLetters) {
 	
 	// if the input equals the random word..
@@ -246,11 +261,10 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	
 }
 	
-	/*
-	 * this function gets called in the charInput() function
-	 * if guesses == 0 set the input restriction to 0 so the user can't enter anymore letters
-	 * takes the input from the charInput() function as a parameter
-	 */
+	/**
+	  * Checks if the user is out of gueeses. If out of guesses, if 0 guesses, set letter input restriction to 0 and display out of guess message
+	  * @param input JTextField used for guessing letters
+	  */
 	private void guessChecker(JTextField input) {
 		if (guesses == 0) {
 			
@@ -261,11 +275,10 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		
 	}
 	
-	/*
-	 * function that gets called in the charInput() function
-	 * uses a switch statement that updates the hangman label in App depending on the number of guesses-
-	 * the user is on
-	 */
+	/**
+	  * Uses a switch statement to update the hangman progress image to reflect the user's progress in the game
+	  * @param hangman JLable being used to display the current hangman image
+	  */
 	private void setHangManState(JLabel hangman) {
 		switch (guesses) {
 		case 6:
@@ -292,11 +305,11 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		}
 	}
 	
-	/*
-	 * this function gets called in the wordInput() function
-	 * takes in a string for the prompt of the JOptionPane window
-	 * returns a boolean
-	 */
+	/**
+	  * Displays a confirm dialog box to ask the user if they want to continue
+	  * @param prompt Text to be displayed in the prompt
+	  * @return
+	  */
 	private boolean askConinue(String prompt) {
 		
 		//displays the JOptionpane confirm dialog box with the prompt in it 
@@ -317,6 +330,11 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	/*
 	 * function that adds incorrect letters guessed to an array of characters
 	 * takes the lLetters Jlabel and the input box as a parameter
+	 */
+	/**
+	 * Handles duplicate guesses and updates front and backend to refelct incorrect guesses
+	 * @param lLetters JLabel to display incorrect guesses
+	 * @param input JTextField that gets the user's guess
 	 */
 	private void addLetterPool(JLabel lLetters,JTextField input) {
 		
@@ -342,11 +360,13 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 			
 	}
 	
-	/*
-	 * this function is called in the wordInput() function
-	 * takes in the charInput textbox, the wordProgress label, the numGuesses labal, and the hangman label
-	 * when this function is called it resets the global variables to new ones and updates the labesl in the App class
-	 */
+	/**
+	  * Resets game UI and backend parameters
+	  * @param charInput JtextField being used to collect letter guesses from the user
+	  * @param lWordProgress JLabel that outputs the which letters the user has correctly guessed
+	  * @param lNumGuesses JLabel displying the current number of guesses
+	  * @param hangman JLabel that displays the current hangman picture to replect user's progress
+	  */
 	private void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters) {
 		
 		randomWord = generateWord(); //generates new word
