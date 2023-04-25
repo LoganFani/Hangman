@@ -73,7 +73,7 @@ public class App extends JFrame{
 		
 		JLabel lLettersGuessed = new JLabel("Letters Guessed: ");
 		
-		// !hasn't been implemented yet
+		//label for the incorrect letters guessed
 		JLabel lLetters = new JLabel("");
 		
 		
@@ -93,8 +93,8 @@ public class App extends JFrame{
 		
 		
 		// if one of the buttons pressed execute one of the functions from gameLogic
-		bLetterGuess.addActionListener(e -> gameLogic.charInput(tLetterGuess,lWordProgress,lNumGuesses,hangman));
-		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman));
+		bLetterGuess.addActionListener(e -> gameLogic.charInput(tLetterGuess,lWordProgress,lNumGuesses,hangman,lLetters));
+		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman,lLetters));
 
 		
 		
