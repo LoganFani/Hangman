@@ -12,7 +12,7 @@ public class Logic {
 	String randomWord = generateWord();
 	ArrayList<Character> wordCharList = generateWordArray(randomWord);
 	ArrayList<Character> wordProgList = generateWordProgress(randomWord);
-	ArrayList<String> lettersGuestList = new ArrayList<String>();
+	ArrayList<Character> lettersGuessedList = new ArrayList<Character>();
 	
 	int guesses = 6;
 	int numWins = 0;
@@ -179,9 +179,8 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 				guessChecker(input);
 				
 				//add letters to the guessed letters pool
-				lettersGuestList.add(input.getText());
-				lLetters.setText(lettersGuestList.toString());
 				
+				addLetterPool(lLetters,input); 
 				
 				//call the set hangman state with the hangman label
 				setHangManState(hangman);
@@ -315,19 +314,48 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		
 	}
 	
+	/*
+	 * function that adds incorrect letters guessed to an array of characters
+	 * takes the lLetters Jlabel and the input box as a parameter
+	 */
+	private void addLetterPool(JLabel lLetters,JTextField input) {
+		
+		// if the user enters the same letter already guessed..
+		if (lettersGuessedList.contains(input.getText().charAt(0))) {
+			
+			//prompt the user that they entered a duplicate
+			JOptionPane.showMessageDialog(null, "You have already guessed this letter!");
+			
+			//add 1 to guesses so they don't get penalized
+			guesses +=1;
+		}
+		
+		//if they didn't enter a duplicate..
+		else {
+			
+			//add the letter to the array
+			lettersGuessedList.add(input.getText().charAt(0));
+			
+			//update the label
+			lLetters.setText(lettersGuessedList.toString());
+		}
+			
+	}
 	
 	/*
 	 * this function is called in the wordInput() function
 	 * takes in the charInput textbox, the wordProgress label, the numGuesses labal, and the hangman label
 	 * when this function is called it resets the global variables to new ones and updates the labesl in the App class
 	 */
-	public void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters) {
+	private void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters) {
 		
 		randomWord = generateWord(); //generates new word
 		
 		wordCharList = generateWordArray(randomWord); // generates new wordChar list from the new random word
 		
 		wordProgList = generateWordProgress(randomWord); // generates new wordProgress list from the new random word
+		
+		lettersGuessedList = new ArrayList<Character>(); //resets the letters guessed pool
 		
 		guesses = 6; //sets guesses back to 6
 		
@@ -339,10 +367,8 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		
 		charInput.setDocument(new LetterInputFilter(1)); //resets the input filter back to 1 character
 		
-		lLetters.setText("");
+		lLetters.setText(""); // reset the letters guessed pool back to an empty string
 	}
-		
-	
 	
 	
 }
