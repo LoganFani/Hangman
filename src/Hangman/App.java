@@ -112,10 +112,6 @@ public class App extends JFrame{
 
 		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman,lLetters,imageIcon));
 
-		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman,lLetters,imageIcon));
-
-
-		
 		
 		//adding all of the panels
 		pGuesses.add(lGuesses,BorderLayout.WEST);
