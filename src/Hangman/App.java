@@ -11,6 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import java.io.IOException;
+
+
 
 
 /**
@@ -18,14 +21,14 @@ import javax.swing.JTextField;
  */
 public class App extends JFrame{
 	
-	static Logic gameLogic = new Logic();
 	
 	
 	/**
 	 * Generates the JFrame used for the UI
 	 */
-	public App() {
+	public App() throws IOException{
 		
+		Logic gameLogic = new Logic();
 		
 		final int WIDTH = 640;
 		final int HEIGHT = 360;
@@ -108,7 +111,11 @@ public class App extends JFrame{
 		
 		// if one of the buttons pressed execute one of the functions from gameLogic
 		bLetterGuess.addActionListener(e -> gameLogic.charInput(tLetterGuess,lWordProgress,lNumGuesses,hangman,lLetters,imageIcon));
+
 		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman,lLetters,imageIcon));
+
+		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman,lLetters,imageIcon));
+
 
 		
 		
@@ -152,8 +159,9 @@ public class App extends JFrame{
 	/**
 	 * The main method calls the App() method to generate the UI and start the game
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new App();
 		
 
