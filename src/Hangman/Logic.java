@@ -9,12 +9,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * The Logic class handles all game logic associated with the Hangman gameplay 
  */
 public class Logic {
-		
-	String randomWord = generateWord();
+	String randomWord = requestWord();
 	ArrayList<Character> wordCharList = generateWordArray(randomWord);
 	ArrayList<Character> wordProgList = generateWordProgress(randomWord);
 	ArrayList<Character> lettersGuessedList = new ArrayList<Character>();
@@ -27,7 +33,7 @@ public class Logic {
 	/**
 	 * Logic class constructor
 	 */
-	public Logic() {
+	public Logic() throws IOException{
 		
 	}
 	
@@ -49,6 +55,48 @@ public class Logic {
 		
 		return randomWord;
 	}
+
+	/**
+	 * Request random word from random word API using HTTP GET request, if request fails, fall back to local word array
+	 * @param wordLength The desired length for the random word
+	 * @return The random word returned
+	 * @throws IOException If reading the HTTP GET response fails
+	 */
+	public String requestWord() throws IOException {
+        // Generate random number for HTTP request
+        int randomNum = new Random().nextInt(6) + 3;
+        // Construct HTTP GET request
+        String url = "https://random-word-api.herokuapp.com/word?length=" + randomNum;
+        URL requestURL = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection();
+        connection.setRequestMethod("GET");
+        // Check response
+        int responseCode = connection.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+        // If good response, print word
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // strip unwanted characters and return results
+			String correctedWord = response.toString().replace("\"", "").replace("[", "").replace("]", "");
+			System.out.println(correctedWord);
+            return correctedWord;
+        } else {
+            // If HTTP GET request fails use local word array
+            System.out.println("GET request did not work.");
+            return generateWord();
+
+        }
+
+    }
+
 	
 	/**
 	  * Creates an ArrayList containing the "-" character for each of the letters in the random word
@@ -87,21 +135,6 @@ public class Logic {
 	  * @param index The number of guesses the player has left
 	  * @return The current hangman visual
 	  */
-	public String getHangManState(int index) {
-		
-		final String[] HANGMAN = 
-			{
-					"/Users/loganfani/Desktop/Hangman/src/images",
-					"/Users/loganfani/Desktop/Hangman2/src/images",
-					"/Users/loganfani/Desktop/Hangman3/src/images",
-					"/Users/loganfani/Desktop/Hangman4/src/images",
-					"/Users/loganfani/Desktop/Hangman5/src/images",
-					"/Users/loganfani/Desktop/Hangman6/src/images",
-					"/Users/loganfani/Desktop/Hangman/src/images7"
-			};
-		
-		return HANGMAN[index];
-	}
 
 /**
   * Gets the user's current guess, checks if the letter guessed is in the word, updates current game data, and updates UI to reflect the guess
@@ -175,7 +208,7 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
   * @param lnumGuesses JLabel that displays how many guesses the user has left
   * @param hangman JLabel that displays the current hangman picture to replect user's progress
   */
-public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman,JLabel lLetters) {
+public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
 	
 	// if the input equals the random word..
 	if (input.getText().equals(randomWord)) {
@@ -192,7 +225,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		}
 		
 		// if they press yes call the reset function and reset all of the global variables for the game
-		else {reset(charInput,progress,lnumGuesses,hangman,lLetters);}
+		else {reset(charInput,progress,lnumGuesses,hangman,lLetters,imageIcon);}
 		
 	}
 	
@@ -211,7 +244,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		}
 		
 		//if the user presses yes call the reset function
-		else {reset(charInput,progress,lnumGuesses,hangman,lLetters);}
+		else {reset(charInput,progress,lnumGuesses,hangman,lLetters,imageIcon);}
 	}
 	
 }
@@ -330,7 +363,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	  * @param lNumGuesses JLabel displying the current number of guesses
 	  * @param hangman JLabel that displays the current hangman picture to replect user's progress
 	  */
-	private void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters) {
+	private void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
 		
 		randomWord = generateWord(); //generates new word
 		
@@ -346,7 +379,8 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		
 		lNumGuesses.setText(Integer.toString(guesses)); //sets the guesses back on the screen to 6
 		
-		hangman.setText(getHangManState(0)); //resets the hangman state
+		imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+		hangman.setIcon(imageIcon); //resets the hangman state
 		
 		charInput.setDocument(new LetterInputFilter(1)); //resets the input filter back to 1 character
 		
