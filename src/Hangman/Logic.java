@@ -20,7 +20,6 @@ import java.net.URL;
  * The Logic class handles all game logic associated with the Hangman gameplay 
  */
 public class Logic {
-		
 	String randomWord = requestWord();
 	ArrayList<Character> wordCharList = generateWordArray(randomWord);
 	ArrayList<Character> wordProgList = generateWordProgress(randomWord);
@@ -86,7 +85,9 @@ public class Logic {
             in.close();
 
             // strip unwanted characters and return results
-            return response.toString().replace("\"", "").replace("[", "").replace("]", "");
+			String correctedWord = response.toString().replace("\"", "").replace("[", "").replace("]", "");
+			System.out.println(correctedWord);
+            return correctedWord;
         } else {
             // If HTTP GET request fails use local word array
             System.out.println("GET request did not work.");

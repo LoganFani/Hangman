@@ -21,15 +21,13 @@ import java.io.IOException;
  */
 public class App extends JFrame{
 	
-	
-	
 	/**
 	 * Generates the JFrame used for the UI
 	 */
 	public App() throws IOException{
 		
 		Logic gameLogic = new Logic();
-		
+
 		final int WIDTH = 640;
 		final int HEIGHT = 360;
 		
