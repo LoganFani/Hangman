@@ -20,7 +20,6 @@ import java.net.URL;
  * The Logic class handles all game logic associated with the Hangman gameplay 
  */
 public class Logic {
-		
 	String randomWord = requestWord();
 	ArrayList<Character> wordCharList = generateWordArray(randomWord);
 	ArrayList<Character> wordProgList = generateWordProgress(randomWord);

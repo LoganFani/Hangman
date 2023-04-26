@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class App extends JFrame{
 	
-	static Logic gameLogic = new Logic();
+	
 	
 	
 	/**
@@ -28,7 +28,7 @@ public class App extends JFrame{
 	 */
 	public App() throws IOException{
 		
-		
+		Logic gameLogic = new Logic();
 		final int WIDTH = 640;
 		final int HEIGHT = 360;
 		
@@ -155,7 +155,7 @@ public class App extends JFrame{
 	 * The main method calls the App() method to generate the UI and start the game
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new App();
 		
 
