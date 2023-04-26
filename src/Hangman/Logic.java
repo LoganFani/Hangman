@@ -1,8 +1,10 @@
 package Hangman;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -89,61 +91,13 @@ public class Logic {
 		
 		final String[] HANGMAN = 
 			{
-			"<html> +---+<br>"
-			+ "  |   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ "  |   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|\\  |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|\\  |<br>"
-			+ " /    |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|\\  |<br>"
-			+ " / \\  |<br>"
-			+ "      |<br>"
-			+ "=========</html>"
+					"/Users/loganfani/Desktop/Hangman/src/images",
+					"/Users/loganfani/Desktop/Hangman2/src/images",
+					"/Users/loganfani/Desktop/Hangman3/src/images",
+					"/Users/loganfani/Desktop/Hangman4/src/images",
+					"/Users/loganfani/Desktop/Hangman5/src/images",
+					"/Users/loganfani/Desktop/Hangman6/src/images",
+					"/Users/loganfani/Desktop/Hangman/src/images7"
 			};
 		
 		return HANGMAN[index];
@@ -155,8 +109,9 @@ public class Logic {
   * @param progress JLabel that outputs the which letters the user has correctly guessed
   * @param guessCounter JLabel that shows how many guesses the user has left
   * @param hangman JLabel that displays the current hangman picture to replect user's progress
+  * @param imageIncon passes the imagine icon in App to the method when the setHangmanState method is called
   */
-public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JLabel hangman,JLabel lLetters) {
+public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
 		
 		//inside try/catch statement because it throws an error if the user clicks the button and nothing is in the input box
 		try {
@@ -194,7 +149,7 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 				addLetterPool(lLetters,input); 
 				
 				//call the set hangman state with the hangman label
-				setHangManState(hangman);
+				setHangManState(hangman,imageIcon);
 			}
 		}
 		
@@ -278,29 +233,37 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	/**
 	  * Uses a switch statement to update the hangman progress image to reflect the user's progress in the game
 	  * @param hangman JLable being used to display the current hangman image
+	  * @param imageIcon ImagineIcon being changed to an image matching the amount of guesses the user has
 	  */
-	private void setHangManState(JLabel hangman) {
+	private void setHangManState(JLabel hangman, ImageIcon imageIcon) {
 		switch (guesses) {
 		case 6:
-			hangman.setText(getHangManState(0));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 5:
-			hangman.setText(getHangManState(1));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman2.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 4:
-			hangman.setText(getHangManState(2));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman3.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 3:
-			hangman.setText(getHangManState(3));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman4.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 2:
-			hangman.setText(getHangManState(4));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman5.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 1:
-			hangman.setText(getHangManState(5));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman6.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 0:
-			hangman.setText(getHangManState(6));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman7.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		}
 	}
