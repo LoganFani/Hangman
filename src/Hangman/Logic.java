@@ -1,18 +1,27 @@
 package Hangman;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * The Logic class handles all game logic associated with the Hangman gameplay 
  */
 public class Logic {
 		
-	String randomWord = generateWord();
+	String randomWord = requestWord();
 	ArrayList<Character> wordCharList = generateWordArray(randomWord);
 	ArrayList<Character> wordProgList = generateWordProgress(randomWord);
 	ArrayList<Character> lettersGuessedList = new ArrayList<Character>();
@@ -25,7 +34,7 @@ public class Logic {
 	/**
 	 * Logic class constructor
 	 */
-	public Logic() {
+	public Logic() throws IOException{
 		
 	}
 	
@@ -47,6 +56,46 @@ public class Logic {
 		
 		return randomWord;
 	}
+
+	/**
+	 * Request random word from random word API using HTTP GET request, if request fails, fall back to local word array
+	 * @param wordLength The desired length for the random word
+	 * @return The random word returned
+	 * @throws IOException If reading the HTTP GET response fails
+	 */
+	public String requestWord() throws IOException {
+        // Generate random number for HTTP request
+        int randomNum = new Random().nextInt(6) + 3;
+        // Construct HTTP GET request
+        String url = "https://random-word-api.herokuapp.com/word?length=" + randomNum;
+        URL requestURL = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection();
+        connection.setRequestMethod("GET");
+        // Check response
+        int responseCode = connection.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+        // If good response, print word
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // strip unwanted characters and return results
+            return response.toString().replace("\"", "").replace("[", "").replace("]", "");
+        } else {
+            // If HTTP GET request fails use local word array
+            System.out.println("GET request did not work.");
+            return generateWord();
+
+        }
+
+    }
+
 	
 	/**
 	  * Creates an ArrayList containing the "-" character for each of the letters in the random word
@@ -89,61 +138,13 @@ public class Logic {
 		
 		final String[] HANGMAN = 
 			{
-			"<html> +---+<br>"
-			+ "  |   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ "  |   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|   |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|\\  |<br>"
-			+ "      |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|\\  |<br>"
-			+ " /    |<br>"
-			+ "      |<br>"
-			+ "=========</html>",
-			
-			"<html>  +---+<br>"
-			+ "  |   |<br>"
-			+ "  O   |<br>"
-			+ " /|\\  |<br>"
-			+ " / \\  |<br>"
-			+ "      |<br>"
-			+ "=========</html>"
+					"/Users/loganfani/Desktop/Hangman/src/images",
+					"/Users/loganfani/Desktop/Hangman2/src/images",
+					"/Users/loganfani/Desktop/Hangman3/src/images",
+					"/Users/loganfani/Desktop/Hangman4/src/images",
+					"/Users/loganfani/Desktop/Hangman5/src/images",
+					"/Users/loganfani/Desktop/Hangman6/src/images",
+					"/Users/loganfani/Desktop/Hangman/src/images7"
 			};
 		
 		return HANGMAN[index];
@@ -155,8 +156,9 @@ public class Logic {
   * @param progress JLabel that outputs the which letters the user has correctly guessed
   * @param guessCounter JLabel that shows how many guesses the user has left
   * @param hangman JLabel that displays the current hangman picture to replect user's progress
+  * @param imageIncon passes the imagine icon in App to the method when the setHangmanState method is called
   */
-public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JLabel hangman,JLabel lLetters) {
+public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
 		
 		//inside try/catch statement because it throws an error if the user clicks the button and nothing is in the input box
 		try {
@@ -194,7 +196,7 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 				addLetterPool(lLetters,input); 
 				
 				//call the set hangman state with the hangman label
-				setHangManState(hangman);
+				setHangManState(hangman,imageIcon);
 			}
 		}
 		
@@ -278,29 +280,37 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	/**
 	  * Uses a switch statement to update the hangman progress image to reflect the user's progress in the game
 	  * @param hangman JLable being used to display the current hangman image
+	  * @param imageIcon ImagineIcon being changed to an image matching the amount of guesses the user has
 	  */
-	private void setHangManState(JLabel hangman) {
+	private void setHangManState(JLabel hangman, ImageIcon imageIcon) {
 		switch (guesses) {
 		case 6:
-			hangman.setText(getHangManState(0));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 5:
-			hangman.setText(getHangManState(1));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman2.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 4:
-			hangman.setText(getHangManState(2));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman3.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 3:
-			hangman.setText(getHangManState(3));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman4.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 2:
-			hangman.setText(getHangManState(4));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman5.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 1:
-			hangman.setText(getHangManState(5));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman6.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		case 0:
-			hangman.setText(getHangManState(6));
+			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman7.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			hangman.setIcon(imageIcon);
 			break;
 		}
 	}
