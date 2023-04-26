@@ -85,7 +85,9 @@ public class Logic {
             in.close();
 
             // strip unwanted characters and return results
-            return response.toString().replace("\"", "").replace("[", "").replace("]", "");
+			String correctedWord = response.toString().replace("\"", "").replace("[", "").replace("]", "");
+			System.out.println(correctedWord);
+            return correctedWord;
         } else {
             // If HTTP GET request fails use local word array
             System.out.println("GET request did not work.");
