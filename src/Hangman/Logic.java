@@ -135,22 +135,6 @@ public class Logic {
 	  * @param index The number of guesses the player has left
 	  * @return The current hangman visual
 	  */
-	public String getHangManState(int index) {
-		
-		final String[] HANGMAN = 
-			{
-					"../Hangman/src/images/Hangman.jpeg",
-					"../Hangman/src/images/Hangman2.jpeg",
-					"../Hangman/src/images/Hangman3.jpeg",
-					"../Hangman/src/images/Hangman4.jpeg",
-					"../Hangman/src/images/Hangman5.jpeg",
-					"../Hangman/src/images/Hangman6.jpeg",
-					"../Hangman/src/images/Hangman7.jpeg"
-
-			};
-		
-		return HANGMAN[index];
-	}
 
 /**
   * Gets the user's current guess, checks if the letter guessed is in the word, updates current game data, and updates UI to reflect the guess
