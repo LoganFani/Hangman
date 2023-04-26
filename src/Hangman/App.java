@@ -108,7 +108,7 @@ public class App extends JFrame{
 		
 		// if one of the buttons pressed execute one of the functions from gameLogic
 		bLetterGuess.addActionListener(e -> gameLogic.charInput(tLetterGuess,lWordProgress,lNumGuesses,hangman,lLetters,imageIcon));
-		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman,lLetters));
+		bWordGuess.addActionListener(e -> gameLogic.wordInput(tLetterGuess, tWordGuess, lWordProgress, lNumWins, lNumLosses,lNumGuesses,hangman,lLetters,imageIcon));
 
 		
 		

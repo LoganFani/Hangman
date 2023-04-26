@@ -91,13 +91,13 @@ public class Logic {
 		
 		final String[] HANGMAN = 
 			{
-					"/Users/loganfani/Desktop/Hangman/src/images",
-					"/Users/loganfani/Desktop/Hangman2/src/images",
-					"/Users/loganfani/Desktop/Hangman3/src/images",
-					"/Users/loganfani/Desktop/Hangman4/src/images",
-					"/Users/loganfani/Desktop/Hangman5/src/images",
-					"/Users/loganfani/Desktop/Hangman6/src/images",
-					"/Users/loganfani/Desktop/Hangman/src/images7"
+					"../Hangman/src/images/Hangman.jpeg",
+					"../Hangman/src/images/Hangman2.jpeg",
+					"../Hangman/src/images/Hangman3.jpeg",
+					"../Hangman/src/images/Hangman4.jpeg",
+					"../Hangman/src/images/Hangman5.jpeg",
+					"../Hangman/src/images/Hangman6.jpeg",
+					"../Hangman/src/images/Hangman7.jpeg"
 			};
 		
 		return HANGMAN[index];
@@ -175,7 +175,7 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
   * @param lnumGuesses JLabel that displays how many guesses the user has left
   * @param hangman JLabel that displays the current hangman picture to replect user's progress
   */
-public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman,JLabel lLetters) {
+public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
 	
 	// if the input equals the random word..
 	if (input.getText().equals(randomWord)) {
@@ -192,7 +192,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		}
 		
 		// if they press yes call the reset function and reset all of the global variables for the game
-		else {reset(charInput,progress,lnumGuesses,hangman,lLetters);}
+		else {reset(charInput,progress,lnumGuesses,hangman,lLetters,imageIcon);}
 		
 	}
 	
@@ -211,7 +211,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		}
 		
 		//if the user presses yes call the reset function
-		else {reset(charInput,progress,lnumGuesses,hangman,lLetters);}
+		else {reset(charInput,progress,lnumGuesses,hangman,lLetters,imageIcon);}
 	}
 	
 }
@@ -330,7 +330,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	  * @param lNumGuesses JLabel displying the current number of guesses
 	  * @param hangman JLabel that displays the current hangman picture to replect user's progress
 	  */
-	private void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters) {
+	private void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
 		
 		randomWord = generateWord(); //generates new word
 		
@@ -346,7 +346,8 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		
 		lNumGuesses.setText(Integer.toString(guesses)); //sets the guesses back on the screen to 6
 		
-		hangman.setText(getHangManState(0)); //resets the hangman state
+		imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+		hangman.setIcon(imageIcon); //resets the hangman state
 		
 		charInput.setDocument(new LetterInputFilter(1)); //resets the input filter back to 1 character
 		
