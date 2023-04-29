@@ -14,19 +14,18 @@ import javax.swing.JTextField;
 import java.io.IOException;
 
 
-
-
 /**
  * The App class creates and manages the JFrame used for the UI in which the game is played
  */
 public class App extends JFrame{
 	
+	Logic gameLogic = new Logic();
+	
 	/**
 	 * Generates the JFrame used for the UI
 	 */
-	public App() throws IOException{
+	public App() {
 		
-		Logic gameLogic = new Logic();
 
 		final int WIDTH = 640;
 		final int HEIGHT = 360;
