@@ -3,16 +3,13 @@ package Hangman;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -33,7 +30,7 @@ public class Logic {
 	/**
 	 * Logic class constructor
 	 */
-	public Logic() throws IOException{
+	public Logic(){
 		
 	}
 	
@@ -62,40 +59,43 @@ public class Logic {
 	 * @return The random word returned
 	 * @throws IOException If reading the HTTP GET response fails
 	 */
-	public String requestWord() throws IOException {
+	public String requestWord() {
         // Generate random number for HTTP request
         int randomNum = new Random().nextInt(6) + 3;
         // Construct HTTP GET request
         String url = "https://random-word-api.herokuapp.com/word?length=" + randomNum;
-        URL requestURL = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection();
-        connection.setRequestMethod("GET");
-        // Check response
-        int responseCode = connection.getResponseCode();
-        System.out.println("Response Code: " + responseCode);
-        // If good response, print word
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
+        
+        try {
+        	 URL requestURL = new URL(url);
+             HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection();
+             connection.setRequestMethod("GET");
+             // Check response
+             int responseCode = connection.getResponseCode();
+             System.out.println("Response Code: " + responseCode);
+             // If good response, print word
+             if (responseCode == HttpURLConnection.HTTP_OK) {
+                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                 String inputLine;
+                 StringBuffer response = new StringBuffer();
 
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
+                 while ((inputLine = in.readLine()) != null) {
+                     response.append(inputLine);
+                 }
+                 in.close();
 
-            // strip unwanted characters and return results
-			String correctedWord = response.toString().replace("\"", "").replace("[", "").replace("]", "");
-			System.out.println(correctedWord);
-            return correctedWord;
-        } else {
-            // If HTTP GET request fails use local word array
-            System.out.println("GET request did not work.");
-            return generateWord();
-
+                 // strip unwanted characters and return results
+     			String correctedWord = response.toString().replace("\"", "").replace("[", "").replace("]", "");
+     			System.out.println(correctedWord);
+                 return correctedWord;
         }
-
-    }
+        
+       
+        } catch (Exception e) {
+        	return generateWord();
+        }
+        
+        return "";
+	}
 
 	
 	/**
@@ -186,10 +186,19 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 			}
 		}
 		
-		// if the user doesn't enter a character in but presses the button promp them saying they entered nothing
+		// if the user doesn't enter a character in but presses the button prompt them saying they entered nothing
 		catch (Exception e){
-			JOptionPane.showMessageDialog(null, "You didn't enter anything into the text box!");
+			
+			//had to put this if statement here to fix a bug where it diplays this message when the user runs out of guesses
+			//this happens because when the user is at 0 guesses it changes the text filter by .setDocument which triggers this message box
+			if (guesses >0) {
+				JOptionPane.showMessageDialog(null, "You didn't enter anything into the text box!");
+			}
+			
 		}
+		
+		//reset the letter in the text box
+		input.setText("");
 		
 		// set the progress label in the App class to the updated wordProgList
 		progress.setText(String.valueOf(wordProgList));
@@ -209,6 +218,7 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
   * @param hangman JLabel that displays the current hangman picture to replect user's progress
   */
 public void wordInput(JTextField charInput, JTextField input, JLabel progress, JLabel wins, JLabel losses, JLabel lnumGuesses, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
+
 	
 	// if the input equals the random word..
 	if (input.getText().equals(randomWord)) {
@@ -246,6 +256,9 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		//if the user presses yes call the reset function
 		else {reset(charInput,progress,lnumGuesses,hangman,lLetters,imageIcon);}
 	}
+	
+	//reset the letter in the text box
+		input.setText("");
 	
 }
 	
@@ -365,7 +378,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	  */
 	private void reset(JTextField charInput, JLabel lWordProgress, JLabel lNumGuesses, JLabel hangman,JLabel lLetters,ImageIcon imageIcon) {
 		
-		randomWord = generateWord(); //generates new word
+		randomWord = requestWord(); //generates new word
 		
 		wordCharList = generateWordArray(randomWord); // generates new wordChar list from the new random word
 		
