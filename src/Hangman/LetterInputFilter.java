@@ -9,6 +9,7 @@ import javax.swing.text.PlainDocument;
  */
 public class LetterInputFilter extends PlainDocument {
 	
+	private static final long serialVersionUID = 7748466219553489230L;
 	int charLimit; //sets the char limit to whatever is put into the constructor
 	
 	/**

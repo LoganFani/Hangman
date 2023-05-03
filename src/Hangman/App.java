@@ -19,6 +19,7 @@ import java.io.IOException;
  */
 public class App extends JFrame{
 	
+	private static final long serialVersionUID = 4059875776700203526L;
 	Logic gameLogic = new Logic();
 	
 	/**
@@ -70,9 +71,8 @@ public class App extends JFrame{
 		JLabel lNumGuesses = new JLabel(Integer.toString(gameLogic.guesses));
 		
 		//always starts a new game off with the hang man state 0
-		ImageIcon imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+		ImageIcon imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 		JLabel hangman = new JLabel(imageIcon);
-		
 		
 
 		

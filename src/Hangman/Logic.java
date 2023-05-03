@@ -171,6 +171,8 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 				//subtract 1 from guesses
 				guesses -=1;
 				
+				//call the set hangman state with the hangman label
+				setHangManState(hangman,imageIcon);
 				//set the guessCounter label in the App class to guesses
 				guessCounter.setText(Integer.toString(guesses));
 				
@@ -181,8 +183,8 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 				
 				addLetterPool(lLetters,input); 
 				
-				//call the set hangman state with the hangman label
-				setHangManState(hangman,imageIcon);
+				
+				
 			}
 		}
 		
@@ -191,7 +193,7 @@ public void charInput(JTextField input, JLabel progress, JLabel guessCounter, JL
 			
 			//had to put this if statement here to fix a bug where it diplays this message when the user runs out of guesses
 			//this happens because when the user is at 0 guesses it changes the text filter by .setDocument which triggers this message box
-			if (guesses >0) {
+			if (guesses > 0) {
 				JOptionPane.showMessageDialog(null, "You didn't enter anything into the text box!");
 			}
 			
@@ -271,6 +273,8 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 			
 			input.setDocument(new LetterInputFilter(0));
 			
+			
+			
 			JOptionPane.showMessageDialog(null, "You are out of guesses you must guess the word now.");
 		}
 		
@@ -284,31 +288,31 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 	private void setHangManState(JLabel hangman, ImageIcon imageIcon) {
 		switch (guesses) {
 		case 6:
-			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 			hangman.setIcon(imageIcon);
 			break;
 		case 5:
-			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman2.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman2.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 			hangman.setIcon(imageIcon);
 			break;
 		case 4:
-			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman3.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman3.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 			hangman.setIcon(imageIcon);
 			break;
 		case 3:
-			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman4.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman4.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 			hangman.setIcon(imageIcon);
 			break;
 		case 2:
-			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman5.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman5.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 			hangman.setIcon(imageIcon);
 			break;
 		case 1:
-			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman6.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman6.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 			hangman.setIcon(imageIcon);
 			break;
 		case 0:
-			imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman7.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+			imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman7.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 			hangman.setIcon(imageIcon);
 			break;
 		}
@@ -392,7 +396,7 @@ public void wordInput(JTextField charInput, JTextField input, JLabel progress, J
 		
 		lNumGuesses.setText(Integer.toString(guesses)); //sets the guesses back on the screen to 6
 		
-		imageIcon = new ImageIcon(new ImageIcon("../Hangman/src/images/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
+		imageIcon = new ImageIcon(new ImageIcon(System.getProperty("user.dir") + "/src/Hangman/Hangman.jpeg").getImage().getScaledInstance(240, 240, Image.SCALE_DEFAULT));
 		hangman.setIcon(imageIcon); //resets the hangman state
 		
 		charInput.setDocument(new LetterInputFilter(1)); //resets the input filter back to 1 character
