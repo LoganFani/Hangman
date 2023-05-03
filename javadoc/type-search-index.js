@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"Hangman","l":"App"},{"p":"Hangman","l":"LetterInputFilter"},{"p":"Hangman","l":"Logic"}];updateSearchResults();
